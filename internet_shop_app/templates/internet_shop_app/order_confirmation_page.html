@@ -1,0 +1,67 @@
+{% extends 'internet_shop_app/base.html' %}
+
+{% block page_header %}
+<div>
+    <h1>Thank you. We'he started to proccesing your order</h1>
+    <p class="lead">ID - {{ order_data.order_id }}</p>    
+</div>
+
+
+{% endblock page_header %}
+
+{% block content %}
+<div class="mt-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_item_list %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price_for_product }}$</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+</div>
+
+<div class="list-group mt-3">
+    <a href="#" class="list-group-item list-group-item-action active">
+        Personal information
+    </a>
+    <a class="list-group-item list-group-item-action disabled">First - {{ order_data.first_name }}</a>
+    <a class="list-group-item list-group-item-action disabled">Last - {{ order_data.last_name }}</a>
+    <a class="list-group-item list-group-item-action disabled">Email - {{ order_data.email }}</a>
+    <a class="list-group-item list-group-item-action disabled">Phone Number - {{ order_data.phone_number }}</a>
+
+    {%if order_data.addres %}
+        <a class="list-group-item list-group-item-action disabled">Addres - {{ order_data.addres }}</a>
+    {% else %}
+    <a class="list-group-item list-group-item-action disabled">Addres - Not added</a>
+    {% endif %}
+    <a class="list-group-item list-group-item-action disabled">Post office - {{ order_data.post_office }}</a>
+    {%if order_data.special_wishes %}
+        <a class="list-group-item list-group-item-action disabled">Special Wishes - {{ order_data.special_wishes }}</a>
+    {% else %}
+        <a class="list-group-item list-group-item-action disabled">Special wished - Not added</a>
+    {% endif %}
+        <a class="list-group-item list-group-item-action disabled">Payment method - {{ order_data.payment_method }}</a>
+    {% if order_data.delivery_date != 'None' %}
+        <a class="list-group-item list-group-item-action disabled">Prefered delivery date -  {{ order_data.delivery_date }}</a>
+    {% else %}
+        <a class="list-group-item list-group-item-action disabled">Prefered delivery date -  Not Added</a>
+    {% endif %}
+</div>
+
+<div class="mt-3">
+    <a class="btn btn-lg btn-primary" href="{% url 'internet_shop_app:index' %}">Home</a>
+</div>
+
+
+{% endblock content %}

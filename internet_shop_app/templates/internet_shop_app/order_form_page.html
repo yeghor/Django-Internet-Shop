@@ -1,0 +1,42 @@
+{% extends 'internet_shop_app/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+<h3>Your Order</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }}$</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h4>Total cost for order: {{ total_price }}$</h4>
+{% endblock page_header %}
+
+{% block content %}
+    {% if total_price > 0 %}
+        <h4>Please, fill the blanks with your personal information</h4>
+        <div>
+            <form class="form" action="{% url 'internet_shop_app:order_form_page' %}" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-lg btn-primary" type="submit" class="btn btn-lg btn-primany">Submit Cart</button>
+            </form>
+        </div>
+    {% elif total_price == 0 %}
+        <h3>Your cart is empty, cannot confirm the order.</h3>
+    {% endif %}
+{% endblock content %}
+

@@ -1,0 +1,73 @@
+{% extends 'internet_shop_app/base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+    <div class="jumbotron">
+        <img class="display-4" src="{{ product.image.url }}" alt="{{ product.name }}" style="width: auto; height: 300px; object-fit: cover;"></img>
+        <h1 class="dispay-4">{{ product.name }}</h1>
+        <hr class="my-4">
+        <p class="lead">{{ product.description }}</p>
+        <div>
+            {% if product.available == True %}   
+                {% if product.stock > 0 %}
+                    <form class="form" action="{% url 'internet_shop_app:product_page' product.id %}" method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button type="submit" class="btn btn-lg btn-primary">Add to cart</button>
+                    </form>                
+                <div class="float-end">
+                        <span class="badge bg-primary">Available</span>
+                        <span class="badge bg-primary">In stock: {{ product.stock }}</span>
+                        <span class="badge bg-primary">{{ product.price }}$</span>
+                </div>
+                {% else %}
+                <div>
+                    <span class="badge bg-secondary">Sold Out</span>
+                    
+                </div>
+                {% endif %}
+
+            {% else %}
+                <span class="badge bg-secondary">The product is not available right now.</span>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block cart_offcanva %}
+    <button class="btn btn-primary fixed-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">View Cart</button>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Your Cart</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul>
+        {% for item in cart %}
+            <li>
+                <h4>{{ item.name }}</h4>
+                <p>ID = ({{ item.id }})</p>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Total price for item: {{ item.total_price }}</p>
+                <form action="{% url 'internet_shop_app:remove_from_cart' item.id %}" method="post">
+                {% csrf_token %}
+                        <button name="submit" class="btn btn-lg btn-outline-primary">Delete From Cart</button>
+                    </form>
+            </li>
+        {% empty %}
+            <p>Cart is empty.</p>
+        {% endfor %}     
+        </ul>
+        <h4>Total Cost: {{ total_price }}$</h4>
+        <form action="{% url 'internet_shop_app:order_form_page' %}" method="post">
+            {% csrf_token %}
+            {% if total_price == 0 %}
+                <button name="submit" class="btn btn-lg btn-primary" disabled>Submit Cart</button>
+            {% else %}
+                <button name="submit" class="btn btn-lg btn-primary">Submit Cart</button>
+            {% endif %}
+        </form>
+    </div>    
+{% endblock cart_offcanva %}

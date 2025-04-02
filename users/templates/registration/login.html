@@ -1,0 +1,15 @@
+{% extends 'internet_shop_app/base.html' %}
+{% load django_bootstrap5 %}
+
+<h1>Log In to your account</h1>
+
+{% block content %}
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit">Log In</button>
+        <input type="hidden" name="next" value="{% url 'internet_shop_app:index' %}"/>
+    </form>
+
+{% endblock content %}

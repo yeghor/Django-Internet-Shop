@@ -1,0 +1,11 @@
+{% extends 'internet_shop_app/base.html' %}
+
+{% block page_header %}
+
+    <h1>You have reached product stock availability.</h1>
+<p>Please, take into account product stock availability</p>
+{% endblock page_header %}
+
+{% block content %}
+    <a class="btn btn-lg btn-primary" href="{% url 'internet_shop_app:index' %}">Home</a>
+{% endblock content %}

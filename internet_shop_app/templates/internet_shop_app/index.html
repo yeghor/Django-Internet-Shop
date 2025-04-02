@@ -1,0 +1,83 @@
+{% extends 'internet_shop_app/base.html' %}
+{% load static %}
+{% block page_header %}
+
+<div class="jumbotron">
+    <h1 class="display-4 fw-bold">Internet Shop</h1>
+    <p class="lead">This project is an online store offering 
+        a wide range of products for various customer needs. 
+        It provides a user-friendly interface, secure payment options, 
+        and efficient delivery services.</p>
+</div>
+
+{% endblock page_header %}
+
+{% block content %}
+    <div>
+        <div class="card" style="width: auto;">
+            <div class="card-body">
+                <h4 class="card-title">Welcome to Our Store!</h4>
+                <p class="card-text">We offer a vast selection 
+                    of high-quality products designed 
+                    to meet all your needs. 
+                    Whether you’re shopping for fashion, 
+                    electronics, or home essentials, our store 
+                    is here to provide you with the best options 
+                    at competitive prices.</p>
+
+            </div>
+        </div>        
+    </div>
+    <div>
+        <div class="card" style="width: auto;">
+            <div class="card-body">
+                <h4 class="card-title">Explore Our Product Range</h4>
+                <p class="card-text">Discover a wide selection 
+                    of premium products handpicked for 
+                    quality and value. Whether you're looking 
+                    for the latest trends or essential everyday 
+                    items, we have something for everyone.</p>
+
+                <p class="card-text">Start shopping with us now.</p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="{% url 'internet_shop_app:products_categories_page' %}">Go To Products</a>    
+                </p>
+    </div>
+
+{% endblock content %}
+{% block cart_offcanva %}
+    <button class="btn btn-primary fixed-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">View Cart</button>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Your Cart</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul>
+        {% for item in cart %}
+            <li>
+                <h4>{{ item.name }}</h4>
+                <p>ID = ({{ item.id }})</p>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Total price for item: {{ item.total_price }}</p>
+                <form action="{% url 'internet_shop_app:remove_from_cart' item.id %}" method="post">
+                {% csrf_token %}
+                        <button name="submit" class="btn btn-lg btn-outline-primary">Delete From Cart</button>
+                    </form>
+            </li>
+        {% empty %}
+            <p>Cart is empty.</p>
+        {% endfor %}     
+        </ul>
+        <h4>Total Cost: {{ total_price }}$</h4>
+        <form action="{% url 'internet_shop_app:order_form_page' %}" method="post">
+            {% csrf_token %}
+            {% if total_price == 0 %}
+                <button name="submit" class="btn btn-lg btn-primary" disabled>Submit Cart</button>
+            {% else %}
+                <button name="submit" class="btn btn-lg btn-primary">Submit Cart</button>
+            {% endif %}
+        </form>
+    </div>    
+{% endblock cart_offcanva %}

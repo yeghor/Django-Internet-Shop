@@ -1,0 +1,11 @@
+{% extends 'internet_shop_app/base.html' %}
+
+
+{% block page_header %}
+    <h1>404 Error</h1>
+    <p>The requested page does not exist.</p>
+{% endblock page_header %}
+
+{% block content %}
+    <a class="btn btn-lg btn-primary" href="{% url 'internet_shop_app:index' %}">Home</a>
+{% endblock content %}

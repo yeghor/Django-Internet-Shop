@@ -1,0 +1,107 @@
+{% load django_bootstrap5 %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+    shrink-to-fit=no">
+    <title>Internet Shop</title>
+
+    <style>
+      .sidebar {
+          height: 100vh; /* Высота на весь экран */
+          position: fixed; /* Фиксация сбоку */
+          top: 0;
+          left: 0;
+          overflow-y: auto; /* Скролл для длинного списка */
+          background-color: #f8f9fa; /* Цвет фона (светлый, как в Bootstrap) */
+          box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Тень для выделения */
+      }
+      .main-content {
+          margin-left: 25%; /* Сдвиг основного контента справа от sidebar */
+      }
+  </style>
+  
+    <style>
+      .fixed-button {
+        position: fixed;
+        bottom: 20px; /* Отступ от нижнего края экрана */
+        right: 20px; /* Отступ от правого края экрана */
+        z-index: 1000; /* Убедитесь, что кнопка будет выше остальных элементов */
+      }
+    </style>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="{% url 'internet_shop_app:index' %}">Company Name</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav">
+                  <li class="nav">
+                    <a class="nav-link" aria-current="page" href="{% url 'internet_shop_app:index' %}">Home</a>
+                  </li>
+                  <li class="nav">
+                    <a class="nav-link" href="#">About Us</a>
+                  </li>
+                  <li class="nav">
+                    <a class="nav-link" href="{% url 'internet_shop_app:products_categories_page' %}">Products</a>
+                  </li>
+                  <li class="nav">
+                    <a class="nav-link" href="#">Profile</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                      <li class="nav">
+                        <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                      </li>
+                      <li class="nav">
+                        <a class="nav-link" href="{% url 'users:logout' %}">Log Out</a>
+                      </li>
+                      <li>
+                      </li>
+                    {% else %}
+                      <li class="nav">
+                        <a class="nav-link" href="{% url 'users:login' %}">Login</a>
+                      </li>
+                      <li class="nav">
+                        <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                      </li>
+                    {% endif %}
+                </ul>
+
+              </div>
+            </div>
+          </nav>
+    </div>
+
+    <main role="main" class="container">
+        <div class="pb-2 mb-2 border-bottom">
+            {% block page_header %}{% endblock page_header %}
+        </div>
+        <div>
+            {% block content %}{% endblock content %}
+        </div>
+        <div>
+          {% block cart_offcanva %}{% endblock cart_offcanva %}
+        </div>
+    </main>
+</body>
+</html>
+
+
