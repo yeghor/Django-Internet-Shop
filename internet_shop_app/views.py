@@ -201,5 +201,3 @@ def order_confirmation_page(request, order_id):
     }
 
     return render(request, 'internet_shop_app/order_confirmation_page.html', context)
-
-print("Test Commit Print")
